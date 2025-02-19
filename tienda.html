@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body class="tienda-page">
+  <!-- Encabezado con navegación -->
+  <header>
+    <h1>Tienda y Administración</h1>
+    <nav>
+      <ul class="nav">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="equipos.html">Equipos</a></li>
+        <li><a href="juego.html">Juego</a></li>
+        <li><a href="tienda.html">Tienda</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Panel principal: Lista de jugadores y panel derecho (ficha + imagen) -->
+    <section class="tienda-panel">
+      <!-- Lista de jugadores para seleccionar -->
+      <div class="lista-jugadores-tienda">
+        <h2>Selecciona un Jugador</h2>
+        <ul id="listaJugadoresTienda">
+          <!-- Se cargarán los jugadores -->
+        </ul>
+      </div>
+
+      <!-- Panel derecho: Contenedor con dos columnas (ficha a la izquierda, imagen a la derecha) -->
+      <div class="panel-derecho">
+        <div class="ficha-imagen-container">
+          <!-- Ficha del jugador -->
+          <div class="ficha-jugador">
+            <h2>Ficha del Jugador</h2>
+            <form id="formFicha">
+              <label for="fichaNombre">Nombre:</label>
+              <input type="text" id="fichaNombre" disabled>
+              
+              <label for="fichaClase">Clase:</label>
+              <input type="text" id="fichaClase" disabled>
+              
+              <label for="fichaEquipo">Equipo:</label>
+              <input type="text" id="fichaEquipo" disabled>
+              
+              <label for="fichaVida">Vida:</label>
+              <input type="number" id="fichaVida">
+              
+              <label for="fichaEnergia">Energía:</label>
+              <input type="number" id="fichaEnergia">
+              
+              <label for="fichaOro">Oro:</label>
+              <input type="number" id="fichaOro">
+              
+              <label for="fichaXP">XP:</label>
+              <input type="number" id="fichaXP">
+              
+              <button type="button" id="btnGuardarFicha">Aceptar</button>
+            </form>
+            <!-- Sección para transferencia (solo para magos y sanadores) -->
+            <div id="transferencia" style="display:none;">
+              <h3>Transferencia</h3>
+              <select id="listaCompañeros">
+                <!-- Se llenará con compañeros del mismo equipo -->
+              </select>
+              <button type="button" id="btnTransferir">Transferir</button>
+              <p id="txtTransferencia"></p>
+            </div>
+          </div>
+
+          <!-- Contenedor para la imagen decorativa (11.png) -->
+          <div class="tienda-imagen">
+            <img src="11.png" alt="Imagen decorativa">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel de objetos (pociones) -->
+    <section class="tienda-objetos">
+      <h2>Objetos Disponibles</h2>
+      <div class="objetos">
+        <div class="objeto">
+          <img src="potion1.png" alt="Poción de vida" data-objeto="potion1">
+          <p>Poción de vida (60 mo)</p>
+        </div>
+        <div class="objeto">
+          <img src="potion2.png" alt="Poción de energía" data-objeto="potion2">
+          <p>Poción de energía (40 mo)</p>
+        </div>
+        <div class="objeto">
+          <img src="potion3.png" alt="Poción de sabiduría" data-objeto="potion3">
+          <p>Poción de sabiduría (50 mo)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal para confirmar compra -->
+    <div id="modalCompra" class="modal" style="display:none;">
+      <div class="modal-content">
+        <p id="modalMensaje"></p>
+        <div class="modal-buttons">
+          <button id="btnModalSi">Sí</button>
+          <button id="btnModalNo">No</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Gamificación. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

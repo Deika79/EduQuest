@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentencias</title>
+  <link rel="stylesheet" href="css/estilos.css">
+  <style>
+    /* Estilos específicos para la página de sentencias */
+    header.sentencias-header {
+      background: url('4.png') no-repeat center center;
+      background-size: cover;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    }
+    .sentencias-container {
+      padding: 20px;
+    }
+    .caidos-list {
+      list-style: none;
+      padding: 0;
+    }
+    .caido-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      margin: 5px 0;
+      background: #f0f0f0;
+      border-radius: 5px;
+    }
+    .roulette {
+      font-weight: bold;
+      font-size: 1.2em;
+      color: #d9534f;
+    }
+    .btn {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    #btnSentencia {
+      background: #f0ad4e;
+      color: white;
+    }
+    #btnCumplido {
+      background: #5cb85c;
+      color: white;
+    }
+    nav ul.nav {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin: 10px 0;
+      padding: 0;
+    }
+    nav ul.nav li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body class="sentencias-page">
+  <header class="sentencias-header">
+    <h1>Gestión de Sentencias</h1>
+  </header>
+  <nav>
+    <ul class="nav">
+      <li><a href="index.html" class="btn">Inicio</a></li>
+      <li><a href="equipos.html" class="btn">Equipos</a></li>
+      <li><a href="juego.html" class="btn">Juego</a></li>
+      <li><a href="tienda.html" class="btn">Tienda</a></li>
+      <li><a href="conductas.html" class="btn">Conductas</a></li>
+      <li><a href="sentencias.html" class="btn">Sentencias</a></li>
+    </ul>
+  </nav>
+  <main class="sentencias-container">
+    <h2>Alumnos Caídos</h2>
+    <ul id="listaCaidos" class="caidos-list">
+      <!-- Se cargarán los alumnos caídos -->
+    </ul>
+  </main>
+  <footer>
+    <p>&copy; 2025 Gamificación. Todos los derechos reservados.</p>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Lista de sentencias disponibles
+      const sentencias = [
+        "Cantar una canción",
+        "Trabajo de lengua",
+        "Trabajo de mates",
+        "Trabajo de inglés",
+        "Haz un dibujo",
+        "Escribe un poema",
+        "Lee un libro en una semana",
+        "Te has librado"
+      ];
+      
+      // Recuperamos la lista de alumnos caídos de localStorage (clave "caidos")
+      // Si no existe, para este ejemplo creamos algunos datos de prueba
+      let caidos = localStorage.getItem('caidos') ? JSON.parse(localStorage.getItem('caidos')) : [];
+      if (caidos.length === 0) {
+        caidos = [
+          { nombre: "Alumno 1", sentencia: "" },
+          { nombre: "Alumno 2", sentencia: "" },
+          { nombre: "Alumno 3", sentencia: "" }
+        ];
+        localStorage.setItem('caidos', JSON.stringify(caidos));
+      }
+      
+      const listaCaidos = document.getElementById('listaCaidos');
+      
+      // Función para renderizar la lista de alumnos caídos
+      function renderCaidos() {
+        listaCaidos.innerHTML = "";
+        caidos.forEach((alumno, index) => {
+          const li = document.createElement('li');
+          li.classList.add('caido-item');
+          li.innerHTML = `<span>${alumno.nombre} ${alumno.sentencia ? "- " + alumno.sentencia : ""}</span>`;
+          
+          // Si el alumno aún no tiene sentencia, mostramos el botón "Sentencia"
+          if (!alumno.sentencia) {
+            const btnSentencia = document.createElement('button');
+            btnSentencia.textContent = "Sentencia";
+            btnSentencia.classList.add('btn');
+            btnSentencia.id = "btnSentencia";
+            btnSentencia.addEventListener('click', () => {
+              asignarSentencia(index, btnSentencia);
+            });
+            li.appendChild(btnSentencia);
+          } else {
+            // Si ya tiene sentencia, mostramos el botón "Cumplido"
+            const btnCumplido = document.createElement('button');
+            btnCumplido.textContent = "Cumplido";
+            btnCumplido.classList.add('btn');
+            btnCumplido.id = "btnCumplido";
+            btnCumplido.addEventListener('click', () => {
+              cumplido(index);
+            });
+            li.appendChild(btnCumplido);
+          }
+          listaCaidos.appendChild(li);
+        });
+      }
+      
+      // Función que simula la ruleta y asigna una sentencia al alumno
+      function asignarSentencia(index, btn) {
+        let contador = 0;
+        const intervalo = setInterval(() => {
+          // Cambia el texto del botón para simular efecto ruleta
+          const randomSentencia = sentencias[Math.floor(Math.random() * sentencias.length)];
+          btn.textContent = randomSentencia;
+          btn.classList.add('roulette');
+          contador++;
+          if (contador >= 15) { // Después de 15 ciclos (aproximadamente 1.5 segundos)
+            clearInterval(intervalo);
+            const sentenciaFinal = sentencias[Math.floor(Math.random() * sentencias.length)];
+            caidos[index].sentencia = sentenciaFinal;
+            localStorage.setItem('caidos', JSON.stringify(caidos));
+            renderCaidos();
+            alert(`Sentencia asignada a ${caidos[index].nombre}: ${sentenciaFinal}`);
+          }
+        }, 100);
+      }
+      
+      // Función para gestionar el botón "Cumplido"
+      function cumplido(index) {
+        alert(`${caidos[index].nombre} ha cumplido su sentencia y recupera 2 puntos de vida.`);
+        // Se elimina la sentencia para permitir que el alumno pueda reintegrarse
+        caidos[index].sentencia = "";
+        localStorage.setItem('caidos', JSON.stringify(caidos));
+        renderCaidos();
+      }
+      
+      renderCaidos();
+    });
+  </script>
+</body>
+</html>

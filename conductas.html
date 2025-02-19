@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conductas</title>
+  <link rel="stylesheet" href="css/estilos.css">
+  <style>
+    /* Ejemplo de estilos específicos para conductas.html */
+    header.conductas-header {
+      background: url('1.jpg') no-repeat center center;
+      background-size: cover;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    }
+    .conductas-container {
+      padding: 20px;
+    }
+    .conductas-buttons {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .conductas-buttons button {
+      padding: 15px 25px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .conductas-buttons button:hover {
+      transform: translateY(-3px);
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+    }
+    /* Colores para cada botón */
+    #btnBuenTrabajo {
+      background: #4CAF50; color: white;
+    }
+    #btnExcelente {
+      background: #2196F3; color: white;
+    }
+    #btnDeberiasMejorar {
+      background: #f44336; color: white;
+    }
+    .jugador-info {
+      margin-top: 20px;
+      padding: 10px;
+      background: #f5f5f5;
+      border-radius: 10px;
+    }
+    nav ul.nav {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin: 10px 0;
+      padding: 0;
+    }
+    nav ul.nav li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body class="conductas-page">
+  <header class="conductas-header">
+    <h1>Premiar Conductas</h1>
+  </header>
+  <nav>
+    <ul class="nav">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="equipos.html">Equipos</a></li>
+      <li><a href="juego.html">Juego</a></li>
+      <li><a href="tienda.html">Tienda</a></li>
+      <li><a href="conductas.html">Conductas</a></li>
+    </ul>
+  </nav>
+  <main class="conductas-container">
+    <h2>Selecciona un Jugador</h2>
+    <select id="selectJugador">
+      <option value="">-- Selecciona un jugador --</option>
+    </select>
+    <div class="jugador-info" id="jugadorInfo" style="display:none;">
+      <h3>Ficha del Jugador</h3>
+      <p id="infoNombre"></p>
+      <p id="infoClase"></p>
+      <p id="infoEquipo"></p>
+      <p id="infoVida"></p>
+      <p id="infoEnergia"></p>
+      <p id="infoOro"></p>
+      <p id="infoXP"></p>
+    </div>
+    <div class="conductas-buttons">
+      <button id="btnBuenTrabajo">Buen trabajo</button>
+      <button id="btnExcelente">Excelente</button>
+      <button id="btnDeberiasMejorar">Deberías mejorar</button>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2025 Gamificación. Todos los derechos reservados.</p>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Recuperamos la lista de jugadores desde localStorage (clave "allPlayers")
+      let allPlayers = localStorage.getItem('allPlayers') ? JSON.parse(localStorage.getItem('allPlayers')) : [];
+      
+      const selectJugador = document.getElementById('selectJugador');
+      const jugadorInfo = document.getElementById('jugadorInfo');
+      const infoNombre = document.getElementById('infoNombre');
+      const infoClase = document.getElementById('infoClase');
+      const infoEquipo = document.getElementById('infoEquipo');
+      const infoVida = document.getElementById('infoVida');
+      const infoEnergia = document.getElementById('infoEnergia');
+      const infoOro = document.getElementById('infoOro');
+      const infoXP = document.getElementById('infoXP');
+
+      // Función para actualizar el dropdown con los jugadores
+      function renderSelect() {
+        selectJugador.innerHTML = '<option value="">-- Selecciona un jugador --</option>';
+        allPlayers.forEach((player, index) => {
+          const option = document.createElement('option');
+          option.value = index;
+          option.textContent = player.nombre + " (" + player.clase + ")";
+          selectJugador.appendChild(option);
+        });
+      }
+
+      // Función para mostrar la ficha del jugador seleccionado
+      function mostrarInfo(index) {
+        if(index === "") {
+          jugadorInfo.style.display = 'none';
+          return;
+        }
+        const player = allPlayers[index];
+        infoNombre.textContent = "Nombre: " + player.nombre;
+        infoClase.textContent = "Clase: " + player.clase;
+        infoEquipo.textContent = "Equipo: " + (player.equipo ? player.equipo : "Sin equipo");
+        infoVida.textContent = "Vida: " + player.vida;
+        infoEnergia.textContent = "Energía: " + player.energia;
+        infoOro.textContent = "Oro: " + player.oro;
+        infoXP.textContent = "XP: " + player.xp;
+        jugadorInfo.style.display = 'block';
+      }
+      
+      // Función para guardar la información actualizada en localStorage
+      function guardarPlayers() {
+        localStorage.setItem('allPlayers', JSON.stringify(allPlayers));
+      }
+      
+      renderSelect();
+      
+      selectJugador.addEventListener('change', (e) => {
+        const index = e.target.value;
+        mostrarInfo(index);
+      });
+      
+      // Botón "Buen trabajo": Suma 50 XP y 5 de oro
+      document.getElementById('btnBuenTrabajo').addEventListener('click', () => {
+        const index = selectJugador.value;
+        if(index === "") {
+          alert("Selecciona un jugador primero.");
+          return;
+        }
+        allPlayers[index].xp += 50;
+        allPlayers[index].oro += 5;
+        guardarPlayers();
+        mostrarInfo(index);
+        alert("Premio aplicado: +50 XP y +5 Oro.");
+      });
+      
+      // Botón "Excelente": Suma 75 XP y 7 de oro
+      document.getElementById('btnExcelente').addEventListener('click', () => {
+        const index = selectJugador.value;
+        if(index === "") {
+          alert("Selecciona un jugador primero.");
+          return;
+        }
+        allPlayers[index].xp += 75;
+        allPlayers[index].oro += 7;
+        guardarPlayers();
+        mostrarInfo(index);
+        alert("Premio aplicado: +75 XP y +7 Oro.");
+      });
+      
+      // Botón "Deberías mejorar": Resta 3 puntos de vida
+      document.getElementById('btnDeberiasMejorar').addEventListener('click', () => {
+        const index = selectJugador.value;
+        if(index === "") {
+          alert("Selecciona un jugador primero.");
+          return;
+        }
+        allPlayers[index].vida -= 3;
+        guardarPlayers();
+        mostrarInfo(index);
+        alert("Castigo aplicado: -3 Vida.");
+      });
+    });
+  </script>
+</body>
+</html>

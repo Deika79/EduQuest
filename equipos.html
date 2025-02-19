@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equipos y Jugadores</title>
+  <!-- Vinculación de la hoja de estilos -->
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body class="equipos-page">
+  <!-- Encabezado con navegación -->
+  <header>
+    <h1>Gestión de Equipos y Jugadores</h1>
+    <nav>
+      <ul class="nav">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="equipos.html">Equipos</a></li>
+        <li><a href="juego.html">Juego</a></li>
+        <li><a href="tienda.html">Tienda</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <div class="container">
+      <!-- Sección izquierda: Jugadores -->
+      <div class="jugadores-section">
+        <div class="formulario-jugador">
+          <h2>Agregar Jugador</h2>
+          <input type="text" id="nombreJugador" placeholder="Nombre del alumno">
+          <select id="claseJugador">
+            <option value="guerrero">Guerrero</option>
+            <option value="mago">Mago</option>
+            <option value="sanador">Sanador</option>
+          </select>
+          <button id="btnAgregarJugador">Agregar</button>
+        </div>
+        <div class="lista-jugadores">
+          <h3>Lista de Jugadores</h3>
+          <ul id="listaJugadores">
+            <!-- Aquí se añadirán los jugadores no asignados -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sección derecha: Equipos -->
+      <div class="equipos-section">
+        <div class="formulario-equipo">
+          <h2>Agregar Equipo</h2>
+          <input type="text" id="nombreEquipo" placeholder="Nombre del equipo">
+          <button id="btnAgregarEquipo">Agregar Equipo</button>
+        </div>
+        <div class="lista-equipos" id="listaEquipos">
+          <!-- Se crearán aquí los contenedores de cada equipo -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Gamificación. Todos los derechos reservados.</p>
+  </footer>
+  
+  <!-- Vinculación del script para la lógica (drag & drop y persistencia) -->
+  <script src="js/script.js"></script>
+</body>
+</html>
